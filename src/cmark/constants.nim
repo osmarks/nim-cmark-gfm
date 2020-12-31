@@ -33,3 +33,21 @@ const
   CMARK_OPT_SMART* = 1 shl 10
     ## Convert straight quotes to curly, `---` to em dashes, `--` to
     ## en dashes.
+
+  CMARK_OPT_GITHUB_PRE_LANG* = 1 shl 11
+    ## Generate GitHub <pre lang="lang">-style codeblocks instead of <pre><code class="language-lang"> ones
+  
+  CMARK_OPT_LIBERAL_HTML_TAG* = 1 shl 12
+    ## Be liberal in interpreting inline HTML tags.
+  
+  CMARK_OPT_FOOTNOTES* = 1 shl 13
+    ## Parse footnotes
+  
+  CMARK_OPT_STRIKETHROUGH_DOUBLE_TILDE* = 1 shl 14
+    ## Only parse strikethroughs if surrounded by exactly 2 tildes. Gives some compatibility with redcarpet.
+
+  CMARK_OPT_TABLE_PREFER_STYLE_ATTRIBUTES* = 1 shl 15
+    ## Use style attributes to align table cells instead of align attributes.
+  
+  CMARK_OPT_FULL_INFO_STRING* = 1 shl 16
+    ## Include the remainder of the info string in code blocks in a separate attribute.

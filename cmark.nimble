@@ -5,7 +5,7 @@ author        = "zengxs"
 description   = "libcmark wrapper for Nim"
 license       = "Apache-2.0"
 srcDir        = "src"
-installExt    = @["a", "nim"]
+installExt    = @["so", "nim"]
 
 
 # Dependencies
@@ -23,7 +23,8 @@ task prebuild, "Generate required headers for libcmark":
   withDir "libcmark":
     exec "make"
 
-  cpFile "./libcmark/build/src/libcmark.a", "./src/libcmark.a"
+  cpFile "./libcmark/build/src/libcmark-gfm.so", "./src/libcmark-gfm.so"
+  cpFile "./libcmark/build/extensions/libcmark-gfm-extensions.so", "./src/libcmark-gfm-extensions.so"
 
 before install:
   exec "nimble prebuild"

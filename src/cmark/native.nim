@@ -2,7 +2,8 @@ import os
 
 include "./constants"
 
-{.passL: joinPath(currentSourcePath.parentDir(), r"../libcmark.a").}
+{.passL: joinPath(currentSourcePath.parentDir(), r"../libcmark-gfm.so").}
+{.passL: joinPath(currentSourcePath.parentDir(), r"../libcmark-gfm-extensions.so").}
 
 type
   NodeType* = enum ## cmark node types.
@@ -20,6 +21,7 @@ type
     ntParagraph
     ntHeading
     ntThematicBreak
+    ntFootnoteDefinition
 
     # Inline
     ntText
@@ -32,6 +34,7 @@ type
     ntStrong
     ntLink
     ntImage
+    ntFootnoteReference
 
   NodeBlock* = range[ntDocument..ntThematicBreak] ## Node block types range.
   NodeInline* = range[ntText..ntImage] ## Node inline types range.
@@ -61,6 +64,10 @@ type
   Iter* = object ## `struct cmark_iter`
   IterPtr* = ptr Iter ## `cmark_iter*`
 
+  Extension* = object
+  ExtensionPtr = ptr Extension
+
+  ExtensionLListPtr = distinct pointer
 
 # === Simple Interface ===
 
@@ -72,7 +79,6 @@ proc cmark_markdown_to_html*(text: cstring, len: csize_t, opt: cint): cstring {.
   ##
   ## Native function signature:
   ## `char *cmark_markdown_to_html(const char *text, size_t len, int options);`
-
 
 # === Creating and Destroying Nodes ===
 
@@ -286,7 +292,7 @@ proc cmark_parser_finish*(parser: ParserPtr): NodePtr {.importc.}
 
 # === Rendering ===
 
-proc cmark_render_xml*(root: NodePtr, opt: cint): cstring {.importc.}
+proc cmark_render_xml*(root: NodePtr, opt: cint, extensions: ExtensionLListPtr): cstring {.importc.}
   ## Render a `node` tree as XML.
   ##
   ## It is the caller's responsibility to free the returned buffer.
@@ -294,16 +300,16 @@ proc cmark_render_xml*(root: NodePtr, opt: cint): cstring {.importc.}
   ## Native function signature:
   ## `char *cmark_render_xml(cmark_node *root, int options);`
 
-proc cmark_render_html*(root: NodePtr, opt: cint): cstring {.importc.}
+proc cmark_render_html*(root: NodePtr, opt: cint, extensions: ExtensionLListPtr): cstring {.importc.}
   ## Render a `node` tree as an HTML fragment.
   ##
   ## It is up to the user to add an appropriate header and footer.
   ## It is the caller's responsibility to free the returned buffer.
   ##
   ## Native function signature:
-  ## `char *cmark_render_html(cmark_node *root, int options);`
+  ## `char *cmark_render_html(cmark_node *root, int options, cmark_llist *extensions);`
 
-proc cmark_render_man*(root: NodePtr, opt, width: cint): cstring {.importc.}
+proc cmark_render_man*(root: NodePtr, opt, width: cint, extensions: ExtensionLListPtr): cstring {.importc.}
   ## Render a `node` tree as a groff man page, without the header.
   ##
   ## It is the caller's responsibility to free the returned buffer.
@@ -311,7 +317,7 @@ proc cmark_render_man*(root: NodePtr, opt, width: cint): cstring {.importc.}
   ## Native function signature:
   ## `char *cmark_render_man(cmark_node *root, int options, int width);`
 
-proc cmark_render_commonmark*(root: NodePtr, opt, width: cint): cstring {.importc.}
+proc cmark_render_commonmark*(root: NodePtr, opt, width: cint, extensions: ExtensionLListPtr): cstring {.importc.}
   ## Render a `node` tree as a commonmark document.
   ##
   ## It is the caller's responsibility to free the returned buffer.
@@ -319,7 +325,7 @@ proc cmark_render_commonmark*(root: NodePtr, opt, width: cint): cstring {.import
   ## Native function signature:
   ## `char *cmark_render_commonmark(cmark_node *root, int options, int width);`
 
-proc cmark_render_latex*(root: NodePtr, opt, width: cint): cstring {.importc.}
+proc cmark_render_latex*(root: NodePtr, opt, width: cint, extensions: ExtensionLListPtr): cstring {.importc.}
   ## Render a `node` tree as a LaTeX document.
   ##
   ## It is the caller's responsibility to free the returned buffer.
@@ -352,3 +358,7 @@ proc free*(str: pointer): void {.importc.}
   ## Native function signature:
   ## `void free(void *);`
 
+proc cmark_gfm_core_extensions_ensure_registered*() {.importc.}
+proc cmark_parser_attach_syntax_extension*(parser: ParserPtr, extension: ExtensionPtr): cint {.importc.}
+proc cmark_find_syntax_extension*(name: cstring): ExtensionPtr {.importc.}
+proc cmark_parser_get_syntax_extensions*(parser: ParserPtr): ExtensionLListPtr {.importc.}

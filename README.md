@@ -46,4 +46,4 @@ Got output:
 All code is released under the [Apache-2.0](./LICENSE) license.
 
 
-[libcmark]: https://github.com/commonmark/cmark
+[libcmark]: https://github.com/github/cmark-gfm
