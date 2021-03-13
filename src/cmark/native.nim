@@ -2,8 +2,8 @@ import os
 
 include "./constants"
 
-{.passL: joinPath(currentSourcePath.parentDir(), r"../libcmark-gfm.so").}
-{.passL: joinPath(currentSourcePath.parentDir(), r"../libcmark-gfm-extensions.so").}
+{.passL: joinPath(currentSourcePath.parentDir().parentDir(), r"libcmark-gfm-extensions.a").}
+{.passL: joinPath(currentSourcePath.parentDir().parentDir(), r"libcmark-gfm.a").}
 
 type
   NodeType* = enum ## cmark node types.
