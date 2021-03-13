@@ -7,37 +7,37 @@ include "./constants"
 
 type
   NodeType* = enum ## cmark node types.
-    ntNone
+    ntNone = 0
       ## Error status
 
     # Block
-    ntDocument
-    ntBlockQuote
-    ntList
-    ntItem
-    ntCodeBlock
-    ntHtmlBlock
-    ntCustomBlock
-    ntParagraph
-    ntHeading
-    ntThematicBreak
-    ntFootnoteDefinition
+    ntDocument = CMARK_NODE_TYPE_BLOCK or 0x0001
+    ntBlockQuote = CMARK_NODE_TYPE_BLOCK or 0x0002
+    ntList = CMARK_NODE_TYPE_BLOCK or 0x0003
+    ntItem = CMARK_NODE_TYPE_BLOCK or 0x0004
+    ntCodeBlock = CMARK_NODE_TYPE_BLOCK or 0x0005
+    ntHtmlBlock = CMARK_NODE_TYPE_BLOCK or 0x0006
+    ntCustomBlock = CMARK_NODE_TYPE_BLOCK or 0x0007
+    ntParagraph = CMARK_NODE_TYPE_BLOCK or 0x0008
+    ntHeading = CMARK_NODE_TYPE_BLOCK or 0x0009
+    ntThematicBreak = CMARK_NODE_TYPE_BLOCK or 0x000a
+    ntFootnoteDefinition = CMARK_NODE_TYPE_BLOCK or 0x000b
 
     # Inline
-    ntText
-    ntSoftBreak
-    ntLineBreak
-    ntCode
-    ntHtmlInline
-    ntCustomInline
-    ntEmph
-    ntStrong
-    ntLink
-    ntImage
-    ntFootnoteReference
+    ntText = CMARK_NODE_TYPE_INLINE or 0x0001
+    ntSoftBreak = CMARK_NODE_TYPE_INLINE or 0x0002
+    ntLineBreak = CMARK_NODE_TYPE_INLINE or 0x0003
+    ntCode = CMARK_NODE_TYPE_INLINE or 0x0004
+    ntHtmlInline = CMARK_NODE_TYPE_INLINE or 0x0005
+    ntCustomInline = CMARK_NODE_TYPE_INLINE or 0x0006
+    ntEmph = CMARK_NODE_TYPE_INLINE or 0x0007
+    ntStrong = CMARK_NODE_TYPE_INLINE or 0x0008
+    ntLink = CMARK_NODE_TYPE_INLINE or 0x0009
+    ntImage = CMARK_NODE_TYPE_INLINE or 0x000a
+    ntFootnoteReference = CMARK_NODE_TYPE_INLINE or 0x000b
 
-  NodeBlock* = range[ntDocument..ntThematicBreak] ## Node block types range.
-  NodeInline* = range[ntText..ntImage] ## Node inline types range.
+  #NodeBlock* = range[ntDocument..ntFootnoteDefinition] ## Node block types range.
+  #NodeInline* = range[ntText..ntFootnoteReference] ## Node inline types range.
 
   ListType* = enum
     ltNoList

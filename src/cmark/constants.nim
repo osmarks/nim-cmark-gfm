@@ -51,3 +51,7 @@ const
   
   CMARK_OPT_FULL_INFO_STRING* = 1 shl 16
     ## Include the remainder of the info string in code blocks in a separate attribute.
+
+  CMARK_NODE_TYPE_PRESENT* = 0x8000
+  CMARK_NODE_TYPE_BLOCK* = CMARK_NODE_TYPE_PRESENT or 0x0000
+  CMARK_NODE_TYPE_INLINE* = CMARK_NODE_TYPE_PRESENT or 0x4000
